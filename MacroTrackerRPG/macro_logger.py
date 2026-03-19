@@ -1,5 +1,5 @@
 #Target macros for the week
-targets = {"calories": 3000, "protein": 200, "carbs": 150, "fat": 60}
+targets = {"Calories": 3000, "Protein": 200, "Carbs": 150, "Fat": 60}
 
 #List that stores each meal
 meals = []
@@ -22,24 +22,43 @@ while True:
     #add meal to list
     meals.append(meal)
 
-    print(meals)
+    #store the totals for each macro
+    total_protein = 0
+    total_calories = 0
+    total_carbs = 0
+    total_fat = 0
 
-    
+    #will store total macros
+    total = {}
 
-    total = 0
-
+    #iterate over each meal to add macro totals
     for meal in meals:
         
-        total += meal["Protein"]
+        total_calories += meal["Calories"]
+
+        total_protein += meal["Protein"]
+
+        total_carbs += meal["Carbs"]
+
+        total_fat += meal["Fat"]
 
 
-    print("Your total protein intake was: ", total, " g")
+    #add macro totals to total
+    total = {"Calories": total_calories, "Protein": total_protein, "Carbs": total_carbs, "Fat": total_fat}
+
+    print("Your total calories are: ", total["Calories"], " / ", targets["Calories"], ". Protein: ", total["Protein"], "g", " / ", targets["Protein"], 
+          "g. Carbs: ", total["Carbs"], "g", " / ", targets["Carbs"], "g. Fat: ", total["Fat"], "g", " / ", targets["Fat"], "g.")
    
     
 
     #check to continue loop
     add_meal = input("Add another meal? Y for yes and N for no:")
-    if (add_meal == "N"):
+
+    #remove case sensitivity
+    add_meal = add_meal.lower()
+
+    #check to continue loop
+    if (add_meal == "n"):
 
         break
 
