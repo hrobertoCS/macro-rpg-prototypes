@@ -99,10 +99,40 @@ while True:
           "g. Fat: ", total["Fat"], "g", " / ", targets["Fat"], "g.")
         
         #calculate XP
-        xp = (((total_calories / targets["Calories"]) * 100 ) + 
+        #penalize xp for anything other than protein that 
+        # goes above target amount by flipping  ratio calculation
+        #if totals for these macros go above 15% over target then 
+        # xp for that macro = 0
+        #calculate calories ratio
+        if (total_calories > targets["Calories"]):
+            if (total_calories > (targets["Calories"] * 1.15)):
+                calories_ratio = 0
+            else:
+                calories_ratio = (targets["Calories"] / total_calories) * 100
+        else:
+            calories_ratio = (total_calories / targets["Calories"]) * 100
+
+        #calculate carbs ratio
+        if (total_carbs > targets["Carbs"]):
+            if (total_carbs > (targets["Carbs"] * 1.15)):
+                carbs_ratio = 0
+            else:
+                carbs_ratio = (targets["Carbs"] / total_carbs) * 100
+        else:
+            carbs_ratio = (total_carbs / targets["Carbs"]) * 100
+
+        #calculate fat ratio
+        if (total_fat > targets["Fat"]):
+            if (total_fat > (targets["Fat"] * 1.15)):
+                fat_ratio = 0
+            else:
+                fat_ratio = (targets["Fat"] / total_fat) * 100
+        else:
+            fat_ratio = (total_fat / targets["Fat"]) * 100
+
+        xp = ( calories_ratio + 
               ((total_protein / targets["Protein"]) * 100) + 
-              ((total_carbs / targets["Carbs"]) * 100) + 
-              ((total_fat / targets["Fat"]) * 100)) / 4
+              carbs_ratio + fat_ratio) / 4
         
         print("Your total XP earned for the day is: ", xp)
         
