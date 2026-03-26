@@ -78,15 +78,41 @@ while True:
     
 
     #check to continue loop
-    add_meal = input("Add another meal? Y for yes and N for no:")
+    add_meal = input("Enter Y to add another meal," \
+    " F to finish for the day, or Q to quit: ")
 
     #remove case sensitivity
     add_meal = add_meal.lower()
 
-    #check to continue loop
-    if (add_meal == "n"):
+    #check to continue loop, finish for the day, or quit
+    #calculate the XP for the day 
+    if (add_meal == "q"):
 
         break
+    elif (add_meal == "f"):
 
+        print("Finishing for the day.")
+        print("Daily Totals: ")
+        print("Calories: ", total["Calories"], " / ", targets["Calories"], 
+          ". Protein: ", total["Protein"], "g", " / ", targets["Protein"], 
+          "g. Carbs: ", total["Carbs"], "g", " / ", targets["Carbs"], 
+          "g. Fat: ", total["Fat"], "g", " / ", targets["Fat"], "g.")
+        
+        #calculate XP
+        xp = (((total_calories / targets["Calories"]) * 100 ) + 
+              ((total_protein / targets["Protein"]) * 100) + 
+              ((total_carbs / targets["Carbs"]) * 100) + 
+              ((total_fat / targets["Fat"]) * 100)) / 4
+        
+        print("Your total XP earned for the day is: ", xp)
+        
+        with open(file_path, "w") as f:
+            json.dump([], f)
+
+            break
+
+    elif (add_meal == "y"):
+        continue
+        
 
 
