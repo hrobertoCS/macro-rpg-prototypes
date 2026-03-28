@@ -98,7 +98,7 @@ while True:
           "g. Carbs: ", total["Carbs"], "g", " / ", targets["Carbs"], 
           "g. Fat: ", total["Fat"], "g", " / ", targets["Fat"], "g.")
         
-        #calculate XP
+    
         #penalize xp for anything other than protein that 
         # goes above target amount by flipping  ratio calculation
         #if totals for these macros go above 15% over target then 
@@ -130,12 +130,19 @@ while True:
         else:
             fat_ratio = (total_fat / targets["Fat"]) * 100
 
-        xp = ( calories_ratio + 
-              ((total_protein / targets["Protein"]) * 100) + 
-              carbs_ratio + fat_ratio) / 4
+
+        protein_ratio = ((total_protein / targets["Protein"]) * 100)
+
+
+        #calculate XP
+        #weight each macro_ratio to adjust for the importance of each in reaching fitness goals
+        xp = ( (calories_ratio * 0.40) + (protein_ratio * 0.35) + (carbs_ratio * 0.15) + (fat_ratio * 0.10) ) 
+        
+
         
         print("Your total XP earned for the day is: ", xp)
         
+        #clear file to prepare for next day
         with open(file_path, "w") as f:
             json.dump([], f)
 
