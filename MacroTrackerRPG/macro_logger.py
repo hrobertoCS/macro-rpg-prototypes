@@ -104,13 +104,23 @@ while True:
         #if totals for these macros go above 15% over target then 
         # xp for that macro = 0
         #calculate calories ratio
+
+        
+
         if (total_calories > targets["Calories"]):
             if (total_calories > (targets["Calories"] * 1.15)):
                 calories_ratio = 0
             else:
                 calories_ratio = (targets["Calories"] / total_calories) * 100
+        #if calories are under 0.75 then xp =0        
+        elif (total_calories < ((targets["Calories"]) * 0.74 )):
+            calories_ratio = 0
         else:
-            calories_ratio = (total_calories / targets["Calories"]) * 100
+            calories_ratio = (total_calories / targets["Calories"]) 
+
+            #only allow XP above 0.75 percent of target cal
+            #set XP range from 1 to 100 starting at 0.75
+            calories_ratio = ((calories_ratio - 0.74) / 0.26) * 100
 
         #calculate carbs ratio
         if (total_carbs > targets["Carbs"]):
