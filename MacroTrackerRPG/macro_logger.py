@@ -85,10 +85,11 @@ while True:
     add_meal = add_meal.lower()
 
     #check to continue loop, finish for the day, or quit
-    #calculate the XP for the day 
+    #quit********************
     if (add_meal == "q"):
 
         break
+    #finish for the day*************************************************************************************************************
     elif (add_meal == "f"):
 
         print("Finishing for the day.")
@@ -99,55 +100,107 @@ while True:
           "g. Fat: ", total["Fat"], "g", " / ", targets["Fat"], "g.")
         
     
-        #penalize xp for anything other than protein that 
-        # goes above target amount by flipping  ratio calculation
-        #if totals for these macros go above 15% over target then 
-        # xp for that macro = 0
         #calculate calories ratio
-
-        
-
         if (total_calories > targets["Calories"]):
+            #if total calories is over 15% greater than target calories, ratio = 0
             if (total_calories > (targets["Calories"] * 1.15)):
                 calories_ratio = 0
+            #total is greater than target, ratio is flipped to target / total
             else:
                 calories_ratio = (targets["Calories"] / total_calories) * 100
-        #if calories are under 0.75 then xp =0        
-        elif (total_calories < ((targets["Calories"]) * 0.74 )):
+        #if total calories are under 0.75 of target calories then ratio =0        
+        elif (total_calories < ((targets["Calories"]) * 0.75 )):
             calories_ratio = 0
+        #ratio is total / target
         else:
             calories_ratio = (total_calories / targets["Calories"]) 
 
-            #only allow XP above 0.75 percent of target cal
-            #set XP range from 1 to 100 starting at 0.75
-            calories_ratio = ((calories_ratio - 0.74) / 0.26) * 100
+            #set XP range from 1 to 100 starting at 75%
+            calories_ratio = ((calories_ratio - 0.75) / 0.25) * 100
 
         #calculate carbs ratio
         if (total_carbs > targets["Carbs"]):
-            if (total_carbs > (targets["Carbs"] * 1.15)):
+            #if total carbs are 25% greater than target, ratio = 0
+            if (total_carbs > (targets["Carbs"] * 1.30)):
                 carbs_ratio = 0
+            #total is greater than target, ratio is flipped to target / total
             else:
                 carbs_ratio = (targets["Carbs"] / total_carbs) * 100
+        #if total carbs are under 50% of target carbs then ratio = 0
+        elif (total_carbs < (targets["Carbs"] * 0.50)):
+            carbs_ratio = 0
+        #ratio is total / target
         else:
-            carbs_ratio = (total_carbs / targets["Carbs"]) * 100
+            carbs_ratio = (total_carbs / targets["Carbs"]) 
+
+            #set xp range from 1 to 100 starting at 50%
+            carbs_ratio = ((carbs_ratio - 0.50) / 0.50) * 100
 
         #calculate fat ratio
         if (total_fat > targets["Fat"]):
-            if (total_fat > (targets["Fat"] * 1.15)):
+            #if total fat is 25% greater than target, ratio = 0 
+            if (total_fat > (targets["Fat"] * 1.25)):
                 fat_ratio = 0
+            #total is greater than target, ratio is flipped to target / total
             else:
                 fat_ratio = (targets["Fat"] / total_fat) * 100
+        #if total fat is under 40% of target then ratio = 0
+        elif (total_fat < (targets["Fat"] * 0.40)):
+            fat_ratio = 0
+        #ratio is total / target
         else:
-            fat_ratio = (total_fat / targets["Fat"]) * 100
+            fat_ratio = (total_fat / targets["Fat"]) 
+            #set xp range from 1 to 100 starting at 40%
+            fat_ratio = ((fat_ratio - 0.40) / 0.60) * 100
 
+        #calculate protein xp
+        if (total_protein < targets["Protein"]):
+            #if total protein is less than target, ratio = 0
+            if (total_protein < (targets["Protein"] * 0.70) ):
+                protein_ratio = 0
+            #ratio is total / target
+            else:
+                protein_ratio = (total_protein / targets["Protein"])
 
-        protein_ratio = ((total_protein / targets["Protein"]) * 100)
+                #set xp range from 1 to 100 starting at 70%
+                protein_ratio = ((protein_ratio - 0.70) / 0.30) *100
+        #ratio is total / target
+        else:
+            protein_ratio = (total_protein / targets["Protein"]) 
 
-
-        #calculate XP
-        #weight each macro_ratio to adjust for the importance of each in reaching fitness goals
-        xp = ( (calories_ratio * 0.40) + (protein_ratio * 0.35) + (carbs_ratio * 0.15) + (fat_ratio * 0.10) ) 
+            #set xp range from 1 to 100 starting at 70%
+            protein_ratio = ((protein_ratio - 0.70) / 0.30) * 100
         
+
+
+        #calculate XP*************************************************************************************
+
+
+        #if both calories and protein are under minimum, xp = 0
+        if ((total_calories < targets["Calories"] * 0.75) and (total_protein < targets["Protein"] * 0.70)  ):
+            xp = 0
+        else:
+            #weight each macro_ratio to adjust for the importance of each in reaching fitness goals
+            xp = ( (calories_ratio * 0.40) + (protein_ratio * 0.35) + (carbs_ratio * 0.15) + (fat_ratio * 0.10) ) 
+        
+        #variable to track how many macros are under threshold
+        under_count = 0
+
+        #count macros under threshold
+        if (calories_ratio == 0):
+            under_count += 1
+        if (protein_ratio == 0):
+            under_count += 1
+        if (carbs_ratio == 0):
+            under_count += 1
+        if (fat_ratio == 0):
+            under_count += 1
+
+        #if under_count is 3 or more, xp = 0
+        if (under_count >= 3):
+            xp = 0
+
+        #***************************************************************************************************        
 
         
         print("Your total XP earned for the day is: ", xp)
@@ -157,7 +210,8 @@ while True:
             json.dump([], f)
 
             break
-
+    #******************************************************************************************************************************************
+    #continue program ****************************************
     elif (add_meal == "y"):
         continue
         
