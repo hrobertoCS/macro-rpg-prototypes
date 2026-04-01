@@ -12,16 +12,10 @@ class Character:
     #adds xp
     #takes xp as amount and adds that to self.xp
     #calls check_level_up
-    def add_xp(self, amount, lvl, last_lvl_xp, lvl_two_xp = 500):
-        self.amount = amount
-        self.lvl = lvl
-        self.last_lvl = last_lvl_xp
-        self.lvl_two_xp = lvl_two_xp
+    def add_xp(self, amount):
+        self.xp += amount
 
-        self.xp += self.amount
-
-        self.check_level_up(self.amount, self.lvl)
-
+        self.check_level_up()
 
 
 
@@ -31,20 +25,26 @@ class Character:
     
 
     #checks if character leveled up
-    def check_level_up(self, amount, lvl, last_lvl, new_lvl = 0):
-        self.amount = amount
-        self.lvl = lvl
-        self.last_lvl = last_lvl
-        self.new_lvl = new_lvl
+    def check_level_up(self):       
 
-        self.new_lvl = last_lvl * 1.5
+        #checks if user has leveled up
+        #uses exponential growth formula so each level is 1.5 times as much xp to level up
+        if (self.xp > (500 * (1.5 ** (self.level - 1)))):
 
-        if (self.amount > self.new_lvl):
-            self.lvl += 1
+            self.level += 1
 
-            print("Level Up!!!!")
+            print("Level Up!!!", "\n", "You are level ",  self.level, "!")
 
+
+
+def main():
+    
+        guy = Character("Guy")
         
+
+        guy.add_xp(600)
+
+main()
 
 
 
