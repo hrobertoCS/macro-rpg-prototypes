@@ -29,11 +29,21 @@ class Character:
 
         #checks if user has leveled up
         #uses exponential growth formula so each level is 1.5 times as much xp to level up
-        if (self.xp > (500 * (1.5 ** (self.level - 1)))):
+        while (self.xp >= (500 * (1.5 ** (self.level - 1)))):
 
-            self.level += 1
+                self.level += 1
 
-            print("Level Up!!!", "\n", "You are level ",  self.level, "!")
+                
+
+
+                print("Level Up!!!", "\n", "You are level ",  self.level, "!")
+
+
+        print("Your current XP is: ", self.xp)
+        print("Current level before next_level calc: ", self.level)
+        next_level = (500 * (1.5 ** (self.level - 1))) - self.xp
+        print("XP until next level is: ", next_level)
+
 
 
 
@@ -42,7 +52,9 @@ def main():
         guy = Character("Guy")
         
 
-        guy.add_xp(600)
+        guy.add_xp(2000)
+
+
 
 main()
 
