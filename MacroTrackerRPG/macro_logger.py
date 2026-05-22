@@ -1,6 +1,8 @@
 import json
 import os
 
+from character import Character
+
 #Target macros for the week
 targets = {"Calories": 3000, "Protein": 200, "Carbs": 150, "Fat": 60}
 
@@ -25,6 +27,8 @@ else:
 
 
 
+#load character
+character = Character.load()
 
 #Main loop
 while True:
@@ -92,7 +96,8 @@ while True:
     #finish for the day*************************************************************************************************************
     elif (add_meal == "f"):
 
-        print("Finishing for the day.")
+        #print macros for the day
+        print("\nFinishing for the day.\n")
         print("Daily Totals: ")
         print("Calories: ", total["Calories"], " / ", targets["Calories"], 
           ". Protein: ", total["Protein"], "g", " / ", targets["Protein"], 
@@ -200,10 +205,12 @@ while True:
         if (under_count >= 3):
             xp = 0
 
-        #***************************************************************************************************        
-
-        
-        print("Your total XP earned for the day is: ", xp)
+        #***************************************************************************************************    
+        print("\nYour total XP earned for the day is: ", xp)
+        #add xp to character, display character info, save character
+        character.add_xp(round(xp))
+        character.display()
+        character.save()
         
         #clear file to prepare for next day
         with open(file_path, "w") as f:

@@ -42,10 +42,9 @@ class Character:
                 print("Level Up!!!", "\n", "You are level ",  self.level, "!")
 
 
-        print("Your current XP is: ", self.xp)
-        print("Current level before next_level calc: ", self.level)
+        print("\nYour current XP is: ", self.xp, "\n")
         next_level = (500 * (1.5 ** (self.level - 1))) - self.xp
-        print("XP until next level is: ", next_level)
+        print("XP until next level is: ", next_level, "\n")
 
     
     #saves the character
@@ -71,7 +70,7 @@ class Character:
 
     #displays character info
     def display(self):
-         print(self.name, self.level, self.xp, self.stats, self.streak)
+         print(self.name, ": ", "Level: ", self.level, " Current XP: ", self.xp, " Stats: ", self.stats, " Streak: ", self.streak)
 
 
 
