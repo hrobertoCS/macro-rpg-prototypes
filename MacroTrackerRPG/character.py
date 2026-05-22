@@ -1,3 +1,6 @@
+import json
+import os
+
 #character class
 class Character: 
     def __init__(self, name, level = 1, xp = 0, stats = None, streak = 0):
@@ -44,6 +47,31 @@ class Character:
         next_level = (500 * (1.5 ** (self.level - 1))) - self.xp
         print("XP until next level is: ", next_level)
 
+    
+    #saves the character
+    def save(self):
+         
+         character_data = {"Name": self.name, "Level": self.level, "XP": self.xp, "Streak": self.streak, 
+                           "Stats": self.stats}
+
+         with open("character_data.json", "w") as f:
+              json.dump(character_data, f)
+
+    #loads or creates a character
+    @classmethod
+    def load(cls):
+         if (os.path.exists("character_data.json")):
+            with open("character_data.json", "r") as f:
+                  data = json.load(f)
+            return cls(name = data["Name"], level = data["Level"], xp = data["XP"], 
+                        streak = data["Streak"], stats = data["Stats"])
+         else:
+              name = input("Enter your name: ")
+              return cls(name = name)
+
+    #displays character info
+    def display(self):
+         print(self.name, self.level, self.xp, self.stats, self.streak)
 
 
 
