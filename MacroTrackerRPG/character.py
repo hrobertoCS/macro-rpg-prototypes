@@ -47,17 +47,6 @@ class Character:
 
 
 
-def main():
-    
-        guy = Character("Guy")
-        
-
-        guy.add_xp(2000)
-
-
-
-main()
-
 
 
 
