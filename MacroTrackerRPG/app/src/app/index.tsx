@@ -1,4 +1,5 @@
 import {View, Text, StyleSheet} from 'react-native';
+import MacroStat from '@/components/MacroStat';
 
 export default function HomeScreen() {
   return (
@@ -6,15 +7,11 @@ export default function HomeScreen() {
       <Text style={styles.title}>MacroTrackerRPG</Text>
       <Text style={styles.subtitle}>{new Date().toLocaleDateString()}</Text>
       <View style={styles.macroContainer}>
-        <View style = {styles.calorieTextContainer}>
-          <Text style={styles.macroText}>Calories</Text>
-        </View>
-        <View style = {styles.proteinTextContainer}>
-          <Text style={styles.macroText}>Protein</Text>
-        </View>
-        <View style = {styles.proteinTextContainer}>
-          <Text style={styles.macroText}>Fat</Text>
-        </View>
+        <MacroStat label='Calories' current={20} goal={2500} color = "#ff7818c5" style = {{position: 'absolute', top: '19%', left: '2%'
+        }} />
+        <MacroStat label='Protein' current={20} goal={200} color = "#dd495def" style = {{position: 'absolute', top: '21%', right: '2%'}} />
+        <MacroStat label='Carbs' current={20} goal={70} color = "#6b4dbeef" style = {{position: 'absolute', top: '50%', left: '2%'}} />
+        <MacroStat label='Fat' current={20} goal={60} color = "#2e997efa" style = {{position: 'absolute', top: '57%', right: '2%'}} />
       </View>
     </View>
 
@@ -24,57 +21,31 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#1f1a25',
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: 34,
+    marginTop: 110,
     fontWeight: 'bold',
     color: '#ffffff',
   },
   subtitle: {
     fontSize: 16,
     color: '#a0a0b0',
-    marginTop: 8,
+    marginTop: 15,
   },
   macroContainer: {
-    marginTop: 32,
+    marginTop: 80,
     flex: 1,
-    backgroundColor: '#34344cff',
-    padding: 20,
+    backgroundColor: 'rgba(82, 67, 50, 0.85)',
     borderRadius: 200,
-    width: '80%',
-    marginBottom: 32,
-    flexDirection: 'row',
-
-  },
-  macroText: {
-    fontSize: 30,
-    color: '#a0a0b0',
-    marginBottom: 8,
-  },
-  calorieTextContainer: {
-    backgroundColor: '#ff781838',
-    borderRadius: 50,
-    width: '20%',
-    height: '15%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '100%',
+    marginBottom: 150,
+    position: 'relative'
     
 
   },
-  proteinTextContainer: {
-    backgroundColor: '#ff781838',
-    borderRadius: 50,
-    marginLeft: 390,
-    marginTop: 15,
-    width: '20%',
-    height: '15%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    
-
-  }
 
 });
