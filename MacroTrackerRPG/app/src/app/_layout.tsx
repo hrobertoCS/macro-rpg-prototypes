@@ -8,6 +8,7 @@ export default function Tablayout() {
         <Tabs.Screen name = "index" options = {{ title: 'Home'}} />
         <Tabs.Screen name = "shop" options= {{ title: 'Shop'}}/>
         <Tabs.Screen name = "settings" options= {{ title: 'Settings'}}/>
+        <Tabs.Screen name = "character" options= {{title: 'Character'}}/>
       </Tabs>
     </GestureHandlerRootView>
   );
