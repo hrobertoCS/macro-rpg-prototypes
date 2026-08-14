@@ -1,6 +1,7 @@
 import {View, Text, StyleSheet} from 'react-native';
 import {Gesture, GestureDetector, } from 'react-native-gesture-handler';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming} from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle} from 'react-native-reanimated';
+import Svg, { Line } from 'react-native-svg';
 
 
 
@@ -10,7 +11,14 @@ export default function CharacterScreen() {
         { id: '1', name: 'Strength', x: 500, y: 300},
         { id: '2', name: 'Speed', x: 500, y: 700},
         { id: '3', name: 'defense', x: 700, y: 450},
+        { id: 'center', name: '', x: 500, y: 500},
     ];
+
+    const skillEdges = [
+        {from: 'center', to: '1'},
+        {from: 'center', to: '2'},
+        {from: 'center', to: '3'},
+    ]
 
 
     const scale = useSharedValue(.75);
@@ -45,6 +53,22 @@ export default function CharacterScreen() {
             <Text style = {styles.characterName}>Name</Text>
             <GestureDetector gesture = {gestures}>
                 <Animated.View style = {[styles.skillTreeContainer, animatedStyle]}>
+                    <Svg style= {StyleSheet.absoluteFill} width = {1000} height = {1000}>
+                        {skillEdges.map((edge) => {
+                            const from = skillNodes.find((n) => n.id === edge.from);
+                            const to = skillNodes.find((n) => n.id === edge.to);
+                            if (!from || !to) return null;
+                            return (
+                                <Line 
+                                    key = {`${edge.from}-${edge.to}`}
+                                    x1={from.x} y1={from.y}
+                                    x2={to.x} y2={to.y}
+                                    stroke = "#ffffff80"
+                                    strokeWidth={8}
+                                />
+                            )
+                        })}
+                    </Svg>
                     <View style = {styles.characterContainer}></View>
                     {skillNodes.map((node) => (
                         <View
@@ -90,8 +114,10 @@ const styles = StyleSheet.create ({
     characterContainer: {
         backgroundColor: 'rgba(117, 177, 199, 1)',
         width: 200,
-        left: 400,
-        top: 400,
+        left: 500,
+        top: 500,
+        marginLeft: -100,
+        marginTop: -100,
         height: 200,
         borderRadius: 200,
         position: 'absolute',
@@ -102,10 +128,16 @@ const styles = StyleSheet.create ({
         backgroundColor: 'rgba(117, 177, 199, 1)',
         padding: 10,
         borderRadius: 30,
+        width: 120,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: -60,
+        marginTop: -25,
 
     },
     nodeText: {
-        fontSize: 12,
+        fontSize: 22,
         color: '#fff',
     }
   
