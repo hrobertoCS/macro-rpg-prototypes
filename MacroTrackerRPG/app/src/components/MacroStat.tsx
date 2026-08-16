@@ -18,8 +18,8 @@ export default function MacroStat({label, current, goal, style, color}: MacroSta
     const translateX = useSharedValue(0);
     const translateY = useSharedValue(0);
     const isDragging = useSharedValue(false);
-    const isActive = useSharedValue(false);
-    const isPressed = useSharedValue(false);
+    const isTapped = useSharedValue(false);
+    const isHeld = useSharedValue(false);
     const [expandedByTap, setExpandedByTap] = useState(false);
     const [expandedByHold, setExpandedByHold] = useState(false);
     const [expandedByDrag, setExpandedByDrag] = useState(false);
@@ -50,18 +50,18 @@ export default function MacroStat({label, current, goal, style, color}: MacroSta
 
     const tap = Gesture.Tap().onEnd(() => {
         scheduleOnRN(setExpandedByTap, (prev: boolean) => !prev);
-        isActive.value = !isActive.value;
+        isTapped.value = !isTapped.value;
     });
 
     const longPress = Gesture.LongPress()
         .minDuration(500)
         .onStart(() => {
             scheduleOnRN(setExpandedByHold, true);
-            isPressed.value = true;
+            isHeld.value = true;
         })
         .onFinalize(() => {
             scheduleOnRN(setExpandedByHold, false);
-            isPressed.value = false;
+            isHeld.value = false;
         })
 
     
@@ -73,11 +73,11 @@ export default function MacroStat({label, current, goal, style, color}: MacroSta
         transform: [
             {translateX: translateX.value},
             {translateY: translateY.value},
-            {scale: withSpring(isDragging.value || isActive.value || isPressed.value ? 1.1 : 1)},
+            {scale: withSpring(isDragging.value || isTapped.value || isHeld.value ? 1.1 : 1)},
         
         ],
 
-        opacity: withTiming(isDragging.value || isActive.value || isPressed.value ? 1 : 0.4),
+        opacity: withTiming(isDragging.value || isTapped.value || isHeld.value ? 1 : 0.9),
     }));
 
     
@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
     color: '#cecabf',
   },
   container: {
-    backgroundColor: '#ff781880',
-    borderRadius: 50,
+    backgroundColor: '#ff7818cb',
+    borderRadius: 10,
     width: '28%',
     paddingVertical: 15,
     justifyContent: 'center',

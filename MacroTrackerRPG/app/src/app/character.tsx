@@ -2,6 +2,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Gesture, GestureDetector, } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle} from 'react-native-reanimated';
 import Svg, { Line } from 'react-native-svg';
+import XPBar from '@/components/XPBar';
 
 
 
@@ -53,6 +54,7 @@ export default function CharacterScreen() {
             <Text style = {styles.characterName}>Name</Text>
             <GestureDetector gesture = {gestures}>
                 <Animated.View style = {[styles.skillTreeContainer, animatedStyle]}>
+
                     <Svg style= {StyleSheet.absoluteFill} width = {1000} height = {1000}>
                         {skillEdges.map((edge) => {
                             const from = skillNodes.find((n) => n.id === edge.from);
@@ -81,6 +83,7 @@ export default function CharacterScreen() {
                    
                 </Animated.View>
             </GestureDetector>
+            <XPBar level={10} currentXP={500} xpNeeded={1500} style = {{position: 'absolute', bottom: 40, width: '70%', zIndex: 10,}}/>
         </View>
     )
 }
@@ -89,7 +92,7 @@ export default function CharacterScreen() {
 const styles = StyleSheet.create ({
     container: {
         flex: 1,
-        backgroundColor: '#7cb9c4ff',
+        backgroundColor: '#a9a187ff',
         alignItems: 'center',
         
     },
@@ -97,7 +100,7 @@ const styles = StyleSheet.create ({
         fontSize: 34,
         top: 60,
         fontWeight: 'bold',
-        color: '#d2e1fbff',
+        color: '#2f4264ff',
         position: 'absolute',
         zIndex: 10,
   },
@@ -105,14 +108,14 @@ const styles = StyleSheet.create ({
         width: 1000,
         height: 1000,
         borderRadius: 10,
-        backgroundColor: '#7cb9c476',
+        backgroundColor: '#a9a187ff',
         
         
 
 
     },
     characterContainer: {
-        backgroundColor: 'rgba(117, 177, 199, 1)',
+        backgroundColor: 'rgba(65, 66, 87, 1)',
         width: 200,
         left: 500,
         top: 500,
@@ -125,7 +128,7 @@ const styles = StyleSheet.create ({
     },
     node: {
         position: 'absolute',
-        backgroundColor: 'rgba(117, 177, 199, 1)',
+        backgroundColor: 'rgba(65, 66, 87, 1)',
         padding: 10,
         borderRadius: 30,
         width: 120,
