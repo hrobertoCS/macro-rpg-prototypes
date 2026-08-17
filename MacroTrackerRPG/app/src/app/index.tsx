@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   macroContainer: {
     marginTop: 80,
     flex: 1,
-    backgroundColor: 'rgba(82, 67, 50, 0.85)',
+    backgroundColor: 'rgba(82, 67, 50, 1)',
     borderRadius: 300,
     width: '100%',
     marginBottom: 150,

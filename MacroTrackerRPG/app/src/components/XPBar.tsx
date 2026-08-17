@@ -41,8 +41,9 @@ export default function XPBar({level, currentXP, xpNeeded, style}: XPBarProps) {
         <GestureDetector gesture ={tap}>
             <Animated.View layout = {LinearTransition} style = {[styles.container, animatedStyle, style ]}>
                 <View style={styles.textGroup}>
-                    <Text style = {styles.xpText}> lvl {level}</Text>
+                    <Text style = {styles.xpText}> LVL{level}</Text>
                     { expandedByTap  && (<Animated.Text entering={FadeIn} exiting={FadeOut} style = {styles.xpText}>{currentXP} / {xpNeeded}</Animated.Text>)}
+                    
                 </View>
                 <View style = {styles.track}>
                     <View style={[styles.fill, {width: `${(currentXP / xpNeeded) * 100}%`, height: '100%'}]}></View>
@@ -56,7 +57,7 @@ export default function XPBar({level, currentXP, xpNeeded, style}: XPBarProps) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#2c2d35ff',
-        borderRadius: 10,
+        borderRadius: 20,
         width: '70%',
         padding: 15,
         justifyContent: 'center',

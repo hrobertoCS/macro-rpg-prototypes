@@ -11,9 +11,11 @@ type MacroStatProps = {
     goal: number;
     style?: ViewStyle;
     color?: string; 
+    draggable?: boolean;
+    textColor?: string;
 };
 
-export default function MacroStat({label, current, goal, style, color}: MacroStatProps) {
+export default function MacroStat({label, current, goal, style, color, draggable = true, textColor,}: MacroStatProps) {
 
     const translateX = useSharedValue(0);
     const translateY = useSharedValue(0);
@@ -67,7 +69,9 @@ export default function MacroStat({label, current, goal, style, color}: MacroSta
     
     
 
-    const gestures = Gesture.Race(tap, Gesture.Simultaneous(pan, longPress));
+    const gestures = draggable
+        ? Gesture.Race(tap, Gesture.Simultaneous(pan, longPress))
+        : tap;
 
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [
@@ -88,7 +92,7 @@ export default function MacroStat({label, current, goal, style, color}: MacroSta
     return (
         <GestureDetector gesture = {gestures}>
             <Animated.View layout={LinearTransition} style = {[styles.container, {backgroundColor: color}, animatedStyle, style]}>
-                <Text style = {styles.label}>{label}</Text>
+                <Text style = {[styles.label, {color: textColor}]}>{label}</Text>
                 {(expandedByTap || expandedByDrag || expandedByHold ) && (<Animated.Text entering={FadeIn} exiting={FadeOut}  style = {styles.label}>{current} / {goal} </Animated.Text>)}
             </Animated.View>
         </GestureDetector>
