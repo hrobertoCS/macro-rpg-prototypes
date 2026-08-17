@@ -4,11 +4,13 @@ import Animated, { useSharedValue, useAnimatedStyle} from 'react-native-reanimat
 import Svg, { Line } from 'react-native-svg';
 import XPBar from '@/components/XPBar';
 import MacroStat from '@/components/MacroStat';
+import {  useMacros } from '@/context/MacroContext';
 
 
 
 
 export default function CharacterScreen() {
+    const {current, goals, level, currentXP, xpNeeded} = useMacros();
     const skillNodes = [
         { id: '1', name: 'Strength', x: 500, y: 300},
         { id: '2', name: 'Speed', x: 500, y: 700},
@@ -85,13 +87,13 @@ export default function CharacterScreen() {
                 </Animated.View>
             </GestureDetector>
             <View style = {styles.macroContainer}>
-                <MacroStat label='Calories' current={20} goal={2500} color = 'rgba(65, 66, 87, 1)' draggable ={false} textColor='#ec9461ff' style={{width: '20%', marginRight: 25, marginLeft: 22, borderRadius: 5, }}/>
-                <MacroStat label='Protein' draggable={false} current={20} goal={200} color = 'rgba(65, 66, 87, 1)' textColor='#fc6767ff' style={{width: '20%', marginRight: 25, borderRadius: 5,}} />
-                <MacroStat label='Fat' draggable={false} current={20} goal={60} color = 'rgba(65, 66, 87, 1)' textColor='#faf49dff' style={{width: '20%', marginRight: 25, borderRadius: 5,}}/>
-                <MacroStat label='Carbs' draggable={false} current={20} goal={70} color = 'rgba(65, 66, 87, 1)' textColor='#a2fe99ff' style={{width: '20%', marginRight: 25, borderRadius: 5,}}/>
-                
+
+                    <MacroStat label='Calories' current={current.calories} goal={goals.calories} color = 'rgba(65, 66, 87, 1)' draggable ={false} textColor='#ec9461ff' style={{width: '20%', marginRight: 25, marginLeft: 22, borderRadius: 5, }}/>
+                    <MacroStat label='Protein' draggable={false} current={current.protein} goal={goals.protein} color = 'rgba(65, 66, 87, 1)' textColor='#fc6767ff' style={{width: '20%', marginRight: 25, borderRadius: 5,}} />
+                    <MacroStat label='Fat' draggable={false} current={current.fat} goal={goals.fat} color = 'rgba(65, 66, 87, 1)' textColor='#faf49dff' style={{width: '20%', marginRight: 25, borderRadius: 5,}}/>
+                    <MacroStat label='Carbs' draggable={false} current={current.carbs} goal={goals.carbs} color = 'rgba(65, 66, 87, 1)' textColor='#a2fe99ff' style={{width: '20%', marginRight: 25, borderRadius: 5,}}/>
             </View>
-            <XPBar level={10} currentXP={500} xpNeeded={1500} style = {{position: 'absolute', bottom: 40, width: '70%', zIndex: 10,}}/>
+            <XPBar level={level} currentXP={currentXP} xpNeeded={xpNeeded} style = {{position: 'absolute', bottom: 40, width: '70%', zIndex: 10,}}/>
         </View>
     )
 }
