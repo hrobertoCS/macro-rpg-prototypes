@@ -38,6 +38,7 @@ export function MacroProvider ({children}: {children: ReactNode}) {
 
 export function useMacros() {
     const context = useContext(MacroContext);
+    //error handler
     //catch useMacros being used outside of the provider before undefined causes a crash
     if (!context) {
         throw new Error('useMacros must be called within MacroProvider');

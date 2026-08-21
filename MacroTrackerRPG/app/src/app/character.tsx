@@ -157,7 +157,7 @@ const styles = StyleSheet.create ({
         flexDirection: 'row',
         alignItems: 'center',
         width: '95%',
-        top: 120,
+        top: '13%',
         position: 'absolute',
         zIndex: 10,
         paddingRight: 40,
