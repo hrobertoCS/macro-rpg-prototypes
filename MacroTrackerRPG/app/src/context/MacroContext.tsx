@@ -11,9 +11,7 @@ type MacroValues = {
 type MacroContextValue = {
     current: MacroValues;
     goals: MacroValues;
-    level: number;
-    currentXP: number;
-    xpNeeded: number;
+    
 }
 
 const MacroContext = createContext<MacroContextValue | undefined>(undefined);
@@ -23,13 +21,11 @@ export function MacroProvider ({children}: {children: ReactNode}) {
     //setter functions will be added once xp logging is implemented
     const [current, setCurrent] = useState<MacroValues> ({calories: 123, protein: 12, carbs: 12, fat: 12})
     const [goals, setGoals] = useState<MacroValues>({calories: 2500, protein: 200, carbs: 80, fat: 70});
-    const [level, setLevel] = useState(10);
-    const [currentXP, setCurrentXP] = useState(1234);
-    const [xpNeeded, setXpNeeded] = useState(4321);
+ 
 
     const value = useMemo( 
-        () => ({ current, goals, level, currentXP, xpNeeded}),
-        [current, goals, level, currentXP, xpNeeded]
+        () => ({ current, goals, }),
+        [current, goals, ]
      );
 
     return <MacroContext value ={value}>{children}</MacroContext>
