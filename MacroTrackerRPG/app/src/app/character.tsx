@@ -5,12 +5,14 @@ import Svg, { Line } from 'react-native-svg';
 import XPBar from '@/components/XPBar';
 import MacroStat from '@/components/MacroStat';
 import {  useMacros } from '@/context/MacroContext';
+import { useCharacter } from '@/context/CharacterContext';
 
 
 
 
 export default function CharacterScreen() {
-    const {current, goals, level, currentXP, xpNeeded} = useMacros();
+    const {current, goals} = useMacros();
+    const {character} = useCharacter();
     const skillNodes = [
         { id: '1', name: 'Strength', x: 500, y: 300},
         { id: '2', name: 'Speed', x: 500, y: 700},
@@ -51,10 +53,18 @@ export default function CharacterScreen() {
         ],
     }));
 
+    // Screen if no character yet
+    if (!character || !goals) {
+        return (
+            <View style = {styles.container}>
+                <Text style = {styles.title}>No character</Text>
+            </View>
+        )
+    }
 
     return (
         <View style = {styles.container}>
-            <Text style = {styles.characterName}>Name</Text>
+            <Text style = {styles.characterName}>{character.name}</Text>
             <GestureDetector gesture = {gestures}>
                 <Animated.View style = {[styles.skillTreeContainer, animatedStyle]}>
 
@@ -93,7 +103,7 @@ export default function CharacterScreen() {
                     <MacroStat label='Fat' draggable={false} current={current.fat} goal={goals.fat} color = 'rgba(65, 66, 87, 1)' textColor='#faf49dff' style={{width: '20%', marginRight: 25, borderRadius: 5,}}/>
                     <MacroStat label='Carbs' draggable={false} current={current.carbs} goal={goals.carbs} color = 'rgba(65, 66, 87, 1)' textColor='#a2fe99ff' style={{width: '20%', marginRight: 25, borderRadius: 5,}}/>
             </View>
-            <XPBar level={level} currentXP={currentXP} xpNeeded={xpNeeded} style = {{position: 'absolute', bottom: 40, width: '70%', zIndex: 10,}}/>
+            <XPBar level={character.level} currentXP={character.xp} xpNeeded={character.xpForNextLevel()} style = {{position: 'absolute', bottom: 40, width: '70%', zIndex: 10,}}/>
         </View>
     )
 }
@@ -161,6 +171,15 @@ const styles = StyleSheet.create ({
         position: 'absolute',
         zIndex: 10,
         paddingRight: 40,
+    },
+
+    title: {
+        fontSize: 34,
+        top: 60,
+        fontWeight: 'bold',
+        color: '#2f4264ff',
+        position: 'absolute',
+        zIndex: 10,
     }
   
 });

@@ -10,27 +10,60 @@ type MacroValues = {
 
 type MacroContextValue = {
     current: MacroValues;
-    goals: MacroValues;
+    goals: MacroValues | null;
+    setTargets: (targets: MacroValues) => void;
+    addMeal: (meal: MacroValues) => void;
     
-}
+};
+
+
 
 const MacroContext = createContext<MacroContextValue | undefined>(undefined);
 
 export function MacroProvider ({children}: {children: ReactNode}) {
-    // TODO: Replace placeholder values with Typescript XP engine in enhancement two
-    //setter functions will be added once xp logging is implemented
-    const [current, setCurrent] = useState<MacroValues> ({calories: 123, protein: 12, carbs: 12, fat: 12})
-    const [goals, setGoals] = useState<MacroValues>({calories: 2500, protein: 200, carbs: 80, fat: 70});
- 
+    
 
+    // Initial tracking state
+    const [current, setCurrent] = useState<MacroValues>({
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fat: 0
+    });
+
+    // Target state
+    const [goals, setGoals] = useState<MacroValues | null>(null);
+
+    // Set user's targets
+    function setTargets(targets: MacroValues) {
+        setGoals(targets);
+    }
+
+    // Adds a meal to daily totals
+    function addMeal(meal: MacroValues) {
+        setCurrent(previous => ({
+            calories: previous.calories + meal.calories,
+            protein: previous.protein + meal.protein,
+            carbs: previous.carbs + meal.carbs,
+            fat: previous.fat + meal.fat,
+        }));
+    }
+
+    // Context value shared with components
     const value = useMemo( 
-        () => ({ current, goals, }),
+        () => ({ current, goals, setTargets, addMeal}),
         [current, goals, ]
      );
 
+    
+    
+
     return <MacroContext value ={value}>{children}</MacroContext>
 
+
 }
+
+
 
 export function useMacros() {
     const context = useContext(MacroContext);

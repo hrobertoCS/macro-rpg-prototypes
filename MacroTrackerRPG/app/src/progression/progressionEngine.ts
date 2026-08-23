@@ -8,14 +8,17 @@ export function calculateProgression(
     targets: MacroTargets,
 ): ProgressionResult {
 
-    // Macro ratio calculation 
-    const macroRatio = {
-        calories: totals.calories / targets.calories,
-        protein: totals.protein / targets.protein,
-        carbs: totals.carbs / targets.carbs,
-        fat: totals.fat / targets.fat,
-    };
+    // Macro categories to loop over
+    const macroCategories = ['calories', 'protein', 'carbs', 'fat'] as const;
+    type macroCategory = typeof macroCategories[number]
 
+
+    // List of ratios for each category
+    const macroRatio = {} as Record<macroCategory, number>;
+
+    for (const macro of macroCategories) {
+        macroRatio[macro] = totals[macro] / targets[macro];
+    }
     // Check scores against minimum and maximum to determine if 0
     function calculateScore(
         ratio: number,
@@ -44,43 +47,30 @@ export function calculateProgression(
 
         
     }
+    
+    
 
     // Macro scores with thresholds applied
-    const scores = {
-        calories: calculateScore(
-            macroRatio.calories,
-            PROGRESSION_RULES.macroThresholds.calories.minimum,
-            PROGRESSION_RULES.macroThresholds.calories.maximum,
-            PROGRESSION_RULES.overTargetType.calories,
-        ),
-        protein: calculateScore(
-            macroRatio.protein,
-            PROGRESSION_RULES.macroThresholds.protein.minimum,
-            PROGRESSION_RULES.macroThresholds.protein.maximum,
-            PROGRESSION_RULES.overTargetType.protein
-        ),
-        carbs: calculateScore(
-            macroRatio.carbs,
-            PROGRESSION_RULES.macroThresholds.carbs.minimum,
-            PROGRESSION_RULES.macroThresholds.carbs.maximum,
-            PROGRESSION_RULES.overTargetType.carbs,
+    // Each pass over the list is O(n) time, O(n) space
+    const scores = {} as Record<typeof macroCategories[number], number>;
+    for (const macro of macroCategories) {
+        const thresholds = PROGRESSION_RULES.macroThresholds[macro];
+        scores[macro] = calculateScore(
+            macroRatio[macro],
+            thresholds.minimum,
+            thresholds.maximum,
+            PROGRESSION_RULES.overTargetType[macro],
+        )
+    }
 
-        ),
-        fat: calculateScore(
-            macroRatio.fat,
-            PROGRESSION_RULES.macroThresholds.fat.minimum,
-            PROGRESSION_RULES.macroThresholds.fat.maximum,
-            PROGRESSION_RULES.overTargetType.fat,
-
-        ),
-    };
 
     //Apply weights to determine overall score to calculate XP
-    const progressionScore = 
-        (scores.calories * PROGRESSION_RULES.macroWeights.calories) +
-        (scores.protein * PROGRESSION_RULES.macroWeights.protein) + 
-        (scores.carbs * PROGRESSION_RULES.macroWeights.carbs) +
-        (scores.fat * PROGRESSION_RULES.macroWeights.fat) 
+    let progressionScore = 0;
+
+    for (const macro of macroCategories) {
+        progressionScore += scores[macro] * PROGRESSION_RULES.macroWeights[macro];
+
+    }
 
 
     
@@ -107,8 +97,7 @@ export function calculateProgression(
     // Round XP after all rules and penalties are applied
     xpEarned = Math.round(xpEarned);
 
-    // TODO: Include macro history in potential calculation 
-    // Temporary calculation using daily macro scores
+
     function calculatePotentials(): Potentials {
 
         return {

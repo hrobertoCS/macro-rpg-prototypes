@@ -1,26 +1,44 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {Link} from 'expo-router';
 import MacroStat from '@/components/MacroStat';
 import XPBar from '@/components/XPBar';
 import { useMacros } from '@/context/MacroContext';
+import { useCharacter } from '@/context/CharacterContext';
 
 export default function HomeScreen() {
 
-  const {current, goals, level, currentXP, xpNeeded} = useMacros();
-  return (
-    <View style={styles.container}>
-      <XPBar level={level} currentXP={currentXP} xpNeeded={xpNeeded} style = {{position: 'absolute', top: '87%',}}/>
-      <Text style={styles.title}>MacroTrackerRPG</Text>
-      <Text style={styles.subtitle}>{new Date().toLocaleDateString()}</Text>
-      <View style={styles.macroContainer}>
-        <MacroStat label='Calories' current={current.calories} goal={goals.calories} color = "#ff7818e0" style = {{position: 'absolute', top: '19%', left: '2%'
-        }} />
-        <MacroStat label='Protein' current={current.protein} goal={goals.protein} color = "#dd495dff" style = {{position: 'absolute', top: '21%', right: '2%'}} />
-        <MacroStat label='Carbs' current={current.carbs} goal={goals.carbs} color = "#6b4dbeef" style = {{position: 'absolute', top: '50%', left: '2%'}} />
-        <MacroStat label='Fat' current={current.fat} goal={goals.fat} color = "#2e997efa" style = {{position: 'absolute', top: '57%', right: '2%'}} />
-      </View>
-    </View>
+  const {current, goals} = useMacros();
+  const {character} = useCharacter();
 
-  );
+  if (!character || !goals) {
+    return (
+      <View style = {styles.container}>
+        <Text style = {styles.title}>MacroTrackerRPG</Text>
+        <Link href= "/create-character" asChild>
+          <Pressable>
+            <Text style = {styles.subtitle}>Create new character</Text>
+          </Pressable>
+        </Link>
+      </View>
+    );
+  }
+
+  
+  return (
+      <View style={styles.container}>
+        <XPBar level={character.level} currentXP={character.xp} xpNeeded={character.xpForNextLevel()} style = {{position: 'absolute', top: '87%',}}/>
+        <Text style={styles.title}>MacroTrackerRPG</Text>
+        <Text style={styles.subtitle}>{new Date().toLocaleDateString()}</Text>
+        <View style={styles.macroContainer}>
+          <MacroStat label='Calories' current={current.calories} goal={goals.calories} color = "#ff7818e0" style = {{position: 'absolute', top: '19%', left: '2%'
+          }} />
+          <MacroStat label='Protein' current={current.protein} goal={goals.protein} color = "#dd495dff" style = {{position: 'absolute', top: '21%', right: '2%'}} />
+          <MacroStat label='Carbs' current={current.carbs} goal={goals.carbs} color = "#6b4dbeef" style = {{position: 'absolute', top: '50%', left: '2%'}} />
+          <MacroStat label='Fat' current={current.fat} goal={goals.fat} color = "#2e997efa" style = {{position: 'absolute', top: '57%', right: '2%'}} />
+        </View>
+      </View>
+
+    );
 }
 
 const styles = StyleSheet.create({
