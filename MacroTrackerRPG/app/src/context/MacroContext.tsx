@@ -1,7 +1,7 @@
 import  {createContext, useContext, useState, useMemo, ReactNode} from 'react';
 
 
-type MacroValues = {
+export type MacroValues = {
     calories: number;
     protein: number;
     carbs: number;

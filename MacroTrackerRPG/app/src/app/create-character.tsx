@@ -19,7 +19,7 @@ export default function CreateCharacter() {
 
 
     // Convert string inputs into numbers
-    function handleCreate() {
+    async function handleCreate() {
         const targets = {
             calories: Number(calories),
             protein: Number(protein),
@@ -36,8 +36,7 @@ export default function CreateCharacter() {
 
         if (!validName || !validTargets) return;
 
-        createCharacter(name.trim());
-        setTargets(targets);
+        await createCharacter(name.trim(), targets);
         router.replace("/")
     }
 

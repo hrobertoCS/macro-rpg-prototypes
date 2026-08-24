@@ -52,7 +52,7 @@ export function calculateProgression(
 
     // Macro scores with thresholds applied
     // Each pass over the list is O(n) time, O(n) space
-    const scores = {} as Record<typeof macroCategories[number], number>;
+    const scores = {} as Record<macroCategory, number>;
     for (const macro of macroCategories) {
         const thresholds = PROGRESSION_RULES.macroThresholds[macro];
         scores[macro] = calculateScore(
@@ -98,6 +98,8 @@ export function calculateProgression(
     xpEarned = Math.round(xpEarned);
 
 
+    // TODO: Include macro history in potential calculation
+    // temporary calculation using daily macro scores
     function calculatePotentials(): Potentials {
 
         return {

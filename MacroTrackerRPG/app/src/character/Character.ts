@@ -9,6 +9,7 @@ export class Character {
     xp: number;
     totalXPEarned: number;
     potentials: Potentials;
+    streak: number;
 
 
     // XP needed to reach next level
@@ -32,6 +33,7 @@ export class Character {
         level = 1,
         xp = 0,
         totalXPEarned = 0,
+        streak = 0,
         potentials: Potentials = {
             strengthPotential: 0,
             endurancePotential: 0,
@@ -41,6 +43,7 @@ export class Character {
         this.name = name;
         this.level = level;
         this.xp = xp;
+        this.streak = streak;
         this.totalXPEarned = totalXPEarned;
         this.potentials = potentials;
         this.checkLevelUp();
@@ -57,6 +60,7 @@ export class Character {
         return new Character(this.name, this.level, this.xp +
             result.xpEarned, 
             this.totalXPEarned + result.xpEarned,
+            this.streak,
             result.potential,
         );
     }

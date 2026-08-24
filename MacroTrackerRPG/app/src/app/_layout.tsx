@@ -15,6 +15,7 @@ export default function Tablayout() {
             <Tabs.Screen name = "settings" options= {{ title: 'Settings'}}/>
             <Tabs.Screen name = "character" options= {{title: 'Character'}}/>
             <Tabs.Screen name = "create-character" options = {{title: 'Create Character', href: null}} />
+            <Tabs.Screen name = "log-meal" options = {{title: 'Log Meal', href: null}} />
           </Tabs>
         </CharacterProvider>
       </MacroProvider>
