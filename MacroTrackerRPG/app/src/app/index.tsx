@@ -49,11 +49,11 @@ export default function HomeScreen() {
         <Text style={styles.title}>MacroTrackerRPG</Text>
         <Text style={styles.subtitle}>{new Date().toLocaleDateString()}</Text>
         <View style={styles.macroContainer}>
-          <MacroStat label='Calories' current={current.calories} goal={goals.calories} color = "#ff7818e0" style = {{position: 'absolute', top: '19%', left: '2%'
+          <MacroStat label='Calories'  textColor= '#cad3e4' current={current.calories} goal={goals.calories} color = 'rgba(65, 66, 87, 0.29)' style = {{position: 'absolute', top: '19%', left: '2%', borderRadius: 100, height: '28%', borderWidth: 4,
           }} />
-          <MacroStat label='Protein' current={current.protein} goal={goals.protein} color = "#dd495dff" style = {{position: 'absolute', top: '21%', right: '2%'}} />
-          <MacroStat label='Carbs' current={current.carbs} goal={goals.carbs} color = "#6b4dbeef" style = {{position: 'absolute', top: '50%', left: '2%'}} />
-          <MacroStat label='Fat' current={current.fat} goal={goals.fat} color = "#2e997efa" style = {{position: 'absolute', top: '57%', right: '2%'}} />
+          <MacroStat label='Protein' textColor= '#cad3e4' current={current.protein} goal={goals.protein} color = 'rgba(65, 66, 87, 1)' style = {{position: 'absolute', top: '21%', right: '2%', borderRadius: 0,}} />
+          <MacroStat label='Carbs' textColor= '#cad3e4' current={current.carbs} goal={goals.carbs} color = 'rgba(65, 66, 87, 1)' style = {{position: 'absolute', top: '50%', left: '2%'}} />
+          <MacroStat label='Fat' textColor= '#cad3e4' current={current.fat} goal={goals.fat} color = 'rgba(65, 66, 87, 1)' style = {{position: 'absolute', top: '57%', right: '2%'}} />
         </View>
         <View style={{position: 'absolute', top: '78%', flexDirection: 'row', gap: 12}}>
           <Button title="Log Meal" onPress={() => router.push('/log-meal')} />
@@ -85,9 +85,10 @@ const styles = StyleSheet.create({
   macroContainer: {
     marginTop: 80,
     flex: 1,
-    backgroundColor: 'rgba(82, 67, 50, 1)',
-    borderRadius: 300,
-    width: '100%',
+    backgroundColor: 'rgba(157, 159, 190, 0.58)',
+    aspectRatio: 1,
+    borderRadius: 9999,
+    width: '80%',
     marginBottom: 150,
     position: 'relative'
     

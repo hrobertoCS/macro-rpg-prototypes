@@ -53,7 +53,7 @@ export default function CharacterScreen() {
         ],
     }));
 
-    // Screen if no character yet
+    // Screen if no character exists yet
     if (!character || !goals) {
         return (
             <View style = {styles.container}>
@@ -112,7 +112,7 @@ export default function CharacterScreen() {
 const styles = StyleSheet.create ({
     container: {
         flex: 1,
-        backgroundColor: '#a9a187ff',
+        backgroundColor: '#1f1a25',
         alignItems: 'center',
         
     },
@@ -120,7 +120,7 @@ const styles = StyleSheet.create ({
         fontSize: 34,
         top: 60,
         fontWeight: 'bold',
-        color: '#2f4264ff',
+        color: '#fc8a39ff',
         position: 'absolute',
         zIndex: 10,
   },
@@ -128,14 +128,14 @@ const styles = StyleSheet.create ({
         width: 1000,
         height: 1000,
         borderRadius: 10,
-        backgroundColor: '#a9a187ff',
+        backgroundColor: '#1f1a25',
         
         
 
 
     },
     characterContainer: {
-        backgroundColor: 'rgba(65, 66, 87, 1)',
+        backgroundColor: 'rgb(157, 159, 190)',
         width: 200,
         left: 500,
         top: 500,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create ({
     },
     node: {
         position: 'absolute',
-        backgroundColor: 'rgba(65, 66, 87, 1)',
+        backgroundColor: 'rgb(157, 159, 190)',
         padding: 10,
         borderRadius: 30,
         width: 120,

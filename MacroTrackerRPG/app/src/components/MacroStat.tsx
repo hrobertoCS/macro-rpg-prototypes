@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     label: {
     fontSize: 16,
     color: '#cecabf',
+    
   },
   container: {
     backgroundColor: '#ff7818cb',
@@ -114,7 +115,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    
-
+    borderWidth: 0.5,
+    borderColor: '#ffffff',
   },
+
 })
