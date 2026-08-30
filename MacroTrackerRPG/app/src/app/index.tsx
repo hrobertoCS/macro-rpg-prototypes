@@ -8,6 +8,7 @@ import { calculateProgression } from '@/progression/progressionEngine';
 import { saveDailyLog } from '@/database/db';
 
 
+
 export default function HomeScreen() {
 
   const {current, goals} = useMacros();
@@ -49,11 +50,11 @@ export default function HomeScreen() {
         <Text style={styles.title}>MacroTrackerRPG</Text>
         <Text style={styles.subtitle}>{new Date().toLocaleDateString()}</Text>
         <View style={styles.macroContainer}>
-          <MacroStat label='Calories'  textColor= '#cad3e4' current={current.calories} goal={goals.calories} color = 'rgba(65, 66, 87, 0.29)' style = {{position: 'absolute', top: '19%', left: '2%', borderRadius: 100, height: '28%', borderWidth: 4,
-          }} />
-          <MacroStat label='Protein' textColor= '#cad3e4' current={current.protein} goal={goals.protein} color = 'rgba(65, 66, 87, 1)' style = {{position: 'absolute', top: '21%', right: '2%', borderRadius: 0,}} />
-          <MacroStat label='Carbs' textColor= '#cad3e4' current={current.carbs} goal={goals.carbs} color = 'rgba(65, 66, 87, 1)' style = {{position: 'absolute', top: '50%', left: '2%'}} />
-          <MacroStat label='Fat' textColor= '#cad3e4' current={current.fat} goal={goals.fat} color = 'rgba(65, 66, 87, 1)' style = {{position: 'absolute', top: '57%', right: '2%'}} />
+            <MacroStat label='Calories'  textColor= '#cad3e4' variant='ring' current={current.calories} goal={goals.calories} color = 'rgba(245, 181, 91, 0.17)' style = {{position: 'absolute', top: '19%', left: '2%', 
+            }} />
+            <MacroStat label='Protein' textColor= '#cad3e4' variant='ring' current={current.protein} goal={goals.protein} color = 'rgba(65, 66, 87, 1)' style = {{position: 'absolute', top: '21%', right: '2%', borderRadius: 0,}} />
+            <MacroStat label='Carbs' textColor= '#cad3e4' variant='ring' current={current.carbs} goal={goals.carbs} color = 'rgba(65, 66, 87, 1)' style = {{position: 'absolute', top: '50%', left: '2%'}} />
+            <MacroStat label='Fat' textColor= '#cad3e4'  variant='ring'current={current.fat} goal={goals.fat} color = 'rgba(65, 66, 87, 1)' style = {{position: 'absolute', top: '57%', right: '2%'}} />
         </View>
         <View style={{position: 'absolute', top: '78%', flexDirection: 'row', gap: 12}}>
           <Button title="Log Meal" onPress={() => router.push('/log-meal')} />

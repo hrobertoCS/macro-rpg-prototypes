@@ -3,6 +3,7 @@ import {Gesture, GestureDetector} from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming, LinearTransition, FadeIn, FadeOut} from 'react-native-reanimated';
 import {useState} from 'react';
 import {scheduleOnRN} from 'react-native-worklets';
+import MacroRing from '@/components/MacroRing';
 
 
 type MacroStatProps = {
@@ -13,9 +14,10 @@ type MacroStatProps = {
     color?: string; 
     draggable?: boolean;
     textColor?: string;
+    variant?: 'card' | 'ring';
 };
 
-export default function MacroStat({label, current, goal, style, color, draggable = true, textColor,}: MacroStatProps) {
+export default function MacroStat({label, current, goal, style, color, draggable = true, textColor, variant = 'card',}: MacroStatProps) {
 
     const translateX = useSharedValue(0);
     const translateY = useSharedValue(0);
@@ -91,7 +93,9 @@ export default function MacroStat({label, current, goal, style, color, draggable
 
     return (
         <GestureDetector gesture = {gestures}>
-            <Animated.View layout={LinearTransition} style = {[styles.container, {backgroundColor: color}, animatedStyle, style]}>
+            <Animated.View layout={LinearTransition} style = {[ variant === 'ring' ? styles.ringContainer : styles.container, variant === 'card' && {backgroundColor: color},
+             animatedStyle, style]}>
+                {variant === 'ring' && (<MacroRing  current={current} goal={goal} style={{width: '100%', position: 'absolute',  height: '100%'}}/>)}
                 <Text style = {[styles.label, {color: textColor}]}>{label}</Text>
                 {(expandedByTap || expandedByDrag || expandedByHold ) && (<Animated.Text entering={FadeIn} exiting={FadeOut}  style = {styles.label}>{current} / {goal} </Animated.Text>)}
             </Animated.View>
@@ -118,5 +122,13 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: '#ffffff',
   },
+  ringContainer: {
+    aspectRatio: 1,
+    width: '28%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+
 
 })
