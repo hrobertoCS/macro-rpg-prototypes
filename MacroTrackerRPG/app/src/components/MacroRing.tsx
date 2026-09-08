@@ -29,10 +29,8 @@ export default function MacroRing({ style, current, goal, ringColor}: MacroRingP
         radius
     )
 
-    console.log({
-        current, progress, goal, currenType: typeof current, goalType: typeof goal,
-    });
-
+    
+    
     return (
         // Define a canvas size
         // Define a circle

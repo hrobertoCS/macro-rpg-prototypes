@@ -6,6 +6,7 @@ import { useMacros } from '@/context/MacroContext';
 import { useCharacter } from '@/context/CharacterContext';
 import { calculateProgression } from '@/progression/progressionEngine';
 import { saveDailyLog } from '@/database/db';
+import {getDate} from '@/utils/date';
 
 
 
@@ -27,6 +28,8 @@ export default function HomeScreen() {
     );
   }
 
+
+
  
   // Save logs to database and award XP
   async function finishDay() {
@@ -34,8 +37,8 @@ export default function HomeScreen() {
 
     const result = calculateProgression(current, goals);
 
-    // ISO sorts as text to sort through date column
-    const today = new Date().toISOString().split('T')[0];
+    // Gets date
+    const today = getDate();
 
     await saveDailyLog(characterId, today, current, result.xpEarned);
     await applyProgression(result);
