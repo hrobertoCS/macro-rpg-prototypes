@@ -37,8 +37,11 @@ export async function initDatabase(): Promise<SQLite.SQLiteDatabase> {
             protein INTEGER NOT NULL,
             carbs INTEGER NOT NULL,
             fat INTEGER NOT NULL,
-            xp_earned INTEGER NOT NULL,
-            FOREIGN KEY (character_id) REFERENCES character(id)  
+            xp_earned INTEGER NOT NULL DEFAULT 0,
+            is_finished INTEGER NOT NULL DEFAULT 0,
+            FOREIGN KEY (character_id) REFERENCES character(id),
+            UNIQUE(character_id, date)
+            
         );
         
         CREATE INDEX IF NOT EXISTS index_date ON daily_logs(date);
@@ -59,6 +62,71 @@ export type DailyLogRow = {
     xp_earned: number;
 };
 
+// Stores current macro totals before day has finished. Validation check first rejects 
+// invalid macros before they enter database
+// Uses parameterized queries to prevent SQL injection 
+export async function saveOpenLog(
+    character_id: number, 
+    date: string, 
+    macros: MacroTotals): Promise<void> {
+        
+        const validation = validateMacros(macros);
+
+        // Validation check
+        if (!validation.valid) {
+            throw new Error(`Invalid macros: ${validation.error}`);
+        }
+
+        const db = await initDatabase();
+
+        // UPSERT adds row of current macros if there is none and updates 
+        // it if a log already exists
+        await db.runAsync(
+            `INSERT INTO daily_logs
+                (character_id, date, calories, protein, carbs, fat)
+            VALUES (?, ?, ?, ?, ?, ?)
+            
+            ON CONFLICT(character_id, date)
+            DO UPDATE SET
+                calories = excluded.calories,
+                protein = excluded.protein,
+                carbs = excluded.carbs,
+                fat = excluded.fat`,
+            
+            character_id,
+            date,
+            macros.calories,
+            macros.protein,
+            macros.carbs,
+            macros.fat
+
+            
+        );
+
+}
+
+// Retrieves the current day's total macros to load into UI when opening app
+export async function getOpenLog(
+    character_id: number,
+    date: string,
+): Promise<MacroTotals | null> {
+
+    const db = await initDatabase();
+
+    const row = await db.getFirstAsync<MacroTotals>(
+        `SELECT calories, protein, carbs, fat 
+        FROM daily_logs
+        WHERE character_id = ?
+            AND date = ?
+            AND is_finished = 0`,
+        character_id,
+        date
+
+    );
+
+    return row;
+}
+
 // Stores one day's macros. Validation checks first to reject invalid values
 // before they reach the database
 // Uses parameterized queries as second layer of Defense in Depth
@@ -77,11 +145,12 @@ export async function saveDailyLog(
     const db = await initDatabase();
 
     await db.runAsync(
-        `INSERT INTO daily_logs
-            (character_id, date, calories, protein, carbs, fat, xp_earned)
-        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        character_id, date, macros.calories, macros.protein, macros.carbs, 
-        macros.fat, xp_earned,
+        `UPDATE daily_logs
+        SET calories = ?, protein = ?, carbs = ?, fat = ?, xp_earned = ?, is_finished = 1
+        WHERE character_id = ?
+            AND date = ?`,
+        macros.calories, macros.protein, macros.carbs, 
+        macros.fat, xp_earned, character_id, date,
     );
 
 }

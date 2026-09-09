@@ -2,10 +2,15 @@ import {View, Text, TextInput, Button, StyleSheet} from "react-native";
 import { useState } from "react";
 import {useRouter} from "expo-router";
 import { useMacros } from "@/context/MacroContext";
+import { useCharacter } from "@/context/CharacterContext";
+import { getDate } from "@/utils/date";
+import { saveOpenLog } from "@/database/db";
 
 export default function LogMeal() {
-    const {addMeal} = useMacros();
+    const {current, addMeal} = useMacros();
     const router = useRouter();
+
+    const {characterId} = useCharacter();
 
     const [calories, setCalories] = useState("");
     const [protein, setProtein] = useState("");
@@ -15,7 +20,7 @@ export default function LogMeal() {
 
     // Adds meal 
     // Values are validated before being added to days total
-    function handleAdd() {
+    async function handleAdd() {
         const meal = {
             calories: Number(calories),
             protein: Number(protein),
@@ -29,7 +34,25 @@ export default function LogMeal() {
 
         if (!validMeal) return;
 
+        const newTotals = {
+            calories: meal.calories + current.calories,
+            protein: meal.protein + current.protein,
+            carbs: meal.carbs + current.carbs,
+            fat: meal.fat + current.fat,
+        };
+
+
+         // saveOpenLog cannnot contain null for characterId
+        if (characterId === null) return;
+
+        const date = getDate();
+
+        // Persists current meals logged
+        await saveOpenLog(characterId, date, newTotals);
+
+        // Update UI
         addMeal(meal);
+
         router.back()
     }
 

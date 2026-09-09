@@ -5,16 +5,41 @@ import XPBar from '@/components/XPBar';
 import { useMacros } from '@/context/MacroContext';
 import { useCharacter } from '@/context/CharacterContext';
 import { calculateProgression } from '@/progression/progressionEngine';
-import { saveDailyLog } from '@/database/db';
+import { saveDailyLog, getOpenLog } from '@/database/db';
 import {getDate} from '@/utils/date';
+import { useEffect } from 'react';
 
 
 
 export default function HomeScreen() {
 
-  const {current, goals} = useMacros();
+  const {current, goals, loadCurrentMacros, resetCurrentMacros} = useMacros();
   const {character, characterId, applyProgression} = useCharacter();
   const router = useRouter();
+
+  
+  // Defines and calls loadOpenLog() to load current macro totals 
+  // from day's open log
+  useEffect(() => {
+    async function loadOpenLog() {
+      if (characterId === null) {
+        return
+      }
+      const date = getDate();
+
+      const currentTotals = await getOpenLog(characterId, date);
+
+      if (currentTotals !== null) {
+        loadCurrentMacros(currentTotals);
+      }
+
+
+    }
+
+    loadOpenLog();
+  }, [characterId])
+
+  
   if (!character || !goals) {
     return (
       <View style = {styles.container}>
@@ -42,6 +67,8 @@ export default function HomeScreen() {
 
     await saveDailyLog(characterId, today, current, result.xpEarned);
     await applyProgression(result);
+
+    resetCurrentMacros();
   }
 
 

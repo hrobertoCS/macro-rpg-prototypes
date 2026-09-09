@@ -1,4 +1,4 @@
-import  {createContext, useContext, useState, useMemo, ReactNode} from 'react';
+import  {createContext, useContext, useState, useMemo, ReactNode,} from 'react';
 
 
 export type MacroValues = {
@@ -13,9 +13,10 @@ type MacroContextValue = {
     goals: MacroValues | null;
     setTargets: (targets: MacroValues) => void;
     addMeal: (meal: MacroValues) => void;
+    loadCurrentMacros: (current: MacroValues) => void;
+    resetCurrentMacros: () => void;
     
 };
-
 
 
 const MacroContext = createContext<MacroContextValue | undefined>(undefined);
@@ -34,6 +35,21 @@ export function MacroProvider ({children}: {children: ReactNode}) {
     // Target state
     const [goals, setGoals] = useState<MacroValues | null>(null);
 
+    // Load user's current Macros from open session/log
+    function loadCurrentMacros(current: MacroValues) {
+        setCurrent(current);
+    }
+
+    function resetCurrentMacros() {
+        setCurrent({
+            calories: 0,
+            protein: 0,
+            carbs: 0,
+            fat: 0
+        }
+        );
+    }
+
     // Set user's targets
     function setTargets(targets: MacroValues) {
         setGoals(targets);
@@ -51,7 +67,7 @@ export function MacroProvider ({children}: {children: ReactNode}) {
 
     // Context value shared with components
     const value = useMemo( 
-        () => ({ current, goals, setTargets, addMeal}),
+        () => ({ current, goals, setTargets, addMeal, loadCurrentMacros, resetCurrentMacros}),
         [current, goals, ]
      );
 
