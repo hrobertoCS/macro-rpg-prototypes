@@ -43,7 +43,7 @@ export default function HomeScreen() {
   if (!character || !goals) {
     return (
       <View style = {styles.container}>
-        <Text style = {styles.title}>MacroTrackerRPG</Text>
+        <Text style = {styles.title}>MacroRPG</Text>
         <Link href= "/create-character" asChild>
           <Pressable>
             <Text style = {styles.subtitle}>Create new character</Text>
@@ -77,7 +77,7 @@ export default function HomeScreen() {
   return (
       <View style={styles.container}>
         <XPBar level={character.level} currentXP={character.xp} xpNeeded={character.xpForNextLevel()} style = {{position: 'absolute', top: '87%',}}/>
-        <Text style={styles.title}>MacroTrackerRPG</Text>
+        <Text style={styles.title}>MacroRPG</Text>
         <Text style={styles.subtitle}>{new Date().toLocaleDateString()}</Text>
         <View style={styles.macroContainer}>
             <MacroStat label='Calories'  textColor= '#cad3e4' variant='ring' current={current.calories} goal={goals.calories} color = 'rgba(245, 181, 91, 0.17)' style = {{position: 'absolute', top: '19%', left: '2%', 
