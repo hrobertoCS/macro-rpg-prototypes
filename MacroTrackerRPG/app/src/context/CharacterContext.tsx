@@ -64,8 +64,8 @@ export function CharacterProvider({children}: {children: ReactNode}) {
 
         if (!character || characterId === null) return;
 
+
         const updated = character.applyProgression(result);
-        setCharacter(updated);
 
         await updateCharacter(
             characterId,
@@ -74,6 +74,9 @@ export function CharacterProvider({children}: {children: ReactNode}) {
             updated.totalXPEarned,
             updated.streak,
         );
+
+        setCharacter(updated);
+
     }
 
     const value =useMemo(
