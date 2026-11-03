@@ -3,6 +3,7 @@ import {useState} from "react";
 import { useRouter } from "expo-router";
 import {useMacros} from "@/context/MacroContext";
 import { useCharacter } from "@/context/CharacterContext";
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export default function CreateCharacter() {
 
@@ -41,7 +42,7 @@ export default function CreateCharacter() {
     }
 
     return (
-        <View style = {styles.container}>
+        <SafeAreaView style = {styles.container} edges = {['top', 'left', 'right']}>
             <Text style = {styles.title}>Create New Character</Text>
 
             <TextInput 
@@ -79,7 +80,7 @@ export default function CreateCharacter() {
             <Button title= "Create Character" onPress= {handleCreate}/>
 
             
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -98,6 +99,7 @@ const styles = StyleSheet.create ({
     },
 
     title: {
+        textAlign: 'center',
         fontSize: 24,
         fontWeight: "bold",
         marginBottom: 20,

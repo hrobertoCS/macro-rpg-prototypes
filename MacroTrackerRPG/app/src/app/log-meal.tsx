@@ -5,6 +5,7 @@ import { useMacros } from "@/context/MacroContext";
 import { useCharacter } from "@/context/CharacterContext";
 import { getDate } from "@/utils/date";
 import { saveOpenLog } from "@/database/db";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LogMeal() {
     const {current, addMeal} = useMacros();
@@ -57,7 +58,7 @@ export default function LogMeal() {
     }
 
     return (
-        <View style = {styles.container}>
+        <SafeAreaView style = {styles.container} edges={['top', 'left', 'right']}>
             <Text style={styles.title}>Log a Meal</Text>
 
             <TextInput
@@ -86,7 +87,7 @@ export default function LogMeal() {
                 onChangeText={setFat}/>
 
             <Button title= "Add Meal" onPress={handleAdd}/>
-        </View>
+        </SafeAreaView>
     );
 
 }
@@ -104,6 +105,7 @@ const styles = StyleSheet.create({
         marginBottom: 12,
     },
     title: {
+        textAlign: 'center',
         fontSize: 24,
         fontWeight: "bold",
         marginBottom: 20,
